@@ -49,5 +49,16 @@ public class UserController {
 
        return re;
     }
+    @PostMapping("/users/login")
+    public ResponseEntity<?> loginUser(@RequestBody UserModel user) throws BusinessException {
+        ResponseEntity<?> re = null;
+       // try{
+            UserModel user1 = userService.loginUser(user);
+             re = new ResponseEntity<UserModel>(user1, HttpStatus.OK);
+       // }catch(BusinessException b){
+         //    re = new ResponseEntity<String>(b.getMessage(),HttpStatus.UNAUTHORIZED);
+       // }
 
+     return re;
+    }
 }
