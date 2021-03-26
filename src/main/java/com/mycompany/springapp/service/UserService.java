@@ -16,21 +16,30 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public Iterable<UserModel> getAllUsers(){
-      Iterable<UserModel> list = userRepository.findAll();
-      return list;
+    public Iterable<UserModel> getAllUsers() {
+        Iterable<UserModel> list = userRepository.findAll();
+        return list;
     }
 
 
     public UserModel registerUser(UserModel userModel) throws BusinessException {
-        UserModel userModel1 = userRepository.findByEmail(userModel.getEmail());
-        if(userModel1 == null) {
+        UserModel userModel1 = userRepository.findByEmailAndPassword(userModel.getEmail(),userModel.getPassword());
+        if (userModel1 == null) {
             userModel = userRepository.save(userModel);
-        }else{
-            throw new BusinessException("Email " +userModel.getEmail()+ " already exists");
+        } else {
+            throw new BusinessException("Email " + userModel.getEmail() + " already exists");
         }
         return userModel;
 
     }
 
+    public UserModel loginUser(UserModel userModel) throws BusinessException {
+        UserModel userModel1 = userRepository.findByEmailAndPassword(userModel.getEmail(), userModel.getPassword());
+
+        if (userModel1 == null) {
+            throw new BusinessException("User Not Available");
+        }
+        return userModel1;
+
+    }
 }
